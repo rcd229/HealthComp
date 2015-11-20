@@ -6,37 +6,34 @@
   <meta name="msapplication-tap-highlight" content="no" />
   <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
   <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-  <title>Mindependence | Home</title>
+  <title>Mindependence | Login</title>
   <link rel="stylesheet" type="text/css" href="css/style.css" />
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script type="text/javascript" src="js/user.js"></script>
 
   <script>
-  function toLogin() {
-    window.location.href = "loginScreen.html";
+  function userTest() {
+    if(typeof(Storage) !== "undefined") {
+      console.log(localStorage.user);
+      var user = new User();
+      user.fromString(localStorage.user);
+      var name = user.getUsername();
+      console.log(name);
+      document.getElementById("name").innerHTML = document.getElementById("name").innerHTML + name;
+    } else {
+    alert("Well this didn't work...");
+    }
   }
+
   </script>
-</head>
+  </head>
 
 <body>
-<div id="container">
-  <div id="logo">
-    <div class="filler"></div>
-    <h3>minimal dependence.</h3>
-    <h3>mind independence.</h3>
-    <h3>MY independence.</h3>
-    <h1><div class="logo-1">Mind</div><div class="logo-2">ependence</div></h1>
-    <div id="underline"></div>
-  </div> 
+  <button onclick="userTest()">Test for user</button>
+  <div style="color:black" id="name">Name: </div>
 
-  <div id="login">
-    <button id="login-button" onclick="toLogin()">Login</button>
-  </div>
-</div>
-
-<script src="phonegap.js"></script>
+<!--<script src="phonegap.js"></script>
 <script type="text/javascript" src="cordova.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
-<script type="text/javascript">app.initialize();</script>
+<script type="text/javascript" src="js/index.js"></script>-->
 </body>
 </html>
-
