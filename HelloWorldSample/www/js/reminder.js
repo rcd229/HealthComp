@@ -1,13 +1,14 @@
 var Reminder = function(category){
     this.category = category;
-    this.photo="";
+    this.image="";
     this.title="";
     this.description="";
     this.date="";
+    this.time="";
     this.repeat="";
   };
 
-Reminder.prototype.setPhoto = function (photourl){
+Reminder.prototype.setImage = function (photourl){
 	this.photo = photourl;
 }
 
@@ -25,4 +26,17 @@ Reminder.prototype.setDate = function (date){
 
 Reminder.prototype.setRepeat = function (repeat){
 	this.repeat = repeat;
+}
+
+Reminder.prototype.getImage = function() {
+    return this.image;
+}
+
+Reminder.prototype.getTitle = function (){
+    return this.title;
+}
+
+Reminder.prototype.timeToString = function() {
+    var timestring = date + " at " + time;
+    return timestring;
 }

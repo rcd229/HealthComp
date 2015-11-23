@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+  <title>Mindependence | Login</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script type="text/javascript" src="js/user.js"></script>
+  <script type="text/javascript" src="js/reminder.js"></script>
+  <!--menu file-->
+  <?php include 'menu.php';?>
+
+  <script>
+
+  var user = new User();
+  var currentCategory ="";
+
+  function displayCategory(category) {
+    var reminders = user.getCategory(category);
+    for (var i = 0; i < reminders.length; i++) {
+      var newDiv = addReminder(reminders[i]);
+      document.getElementById("reminder-list").innerHTML = document.getElementById("reminder-list").innerHTML + newDiv; 
+    };
+  }
+
+  function addReminder(reminder) {
+    var remImg = "<img class\"rem-icon\" src=\"" + reminder.getImage() + "\">";
+    var remTitle = "<div class=\"listed-title\">" + reminder.getTitle(); + "</div>";
+    var remTime = "<div class=\"listed-time\">" + reminder.timeToString(); + "</div>";
+    var remDiv="<div id=\"reminder\" class=\"listed\">" + remImg + remTitle + remTime + "</div>";
+    return remDiv;
+  }
+
+  function remPopUp() {  }
+
+  $( document ).ready(function() {
+    if(typeof(Storage) !== "undefined") {
+      console.log(localStorage.category);
+
+      //get user
+      user.fromString(localStorage.user);
+
+      //get header
+      currentCategory = localStorage.currentCategory;
+      document.getElementById("rem-heading").innerHTML = currentCategory;
+
+      //display all reminders in category
+      displayCategory(currentCategory);
+    }
+
+    else {
+    alert("Well this didn't work...");
+    }
+  });
+
+  </script>
+</head>
+
+<body>
+<div id="rem-heading">
+
+</div>
+</body>
+</html>
