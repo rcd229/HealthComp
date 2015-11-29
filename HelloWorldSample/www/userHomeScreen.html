@@ -10,31 +10,68 @@
   <link rel="stylesheet" type="text/css" href="css/style.css" />
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script type="text/javascript" src="js/user.js"></script>
-
-  <!--menu file-->
-  <?php include 'menu.php';?>
+  <script type="text/javascript" src="js/menu.js"></script>
 
   <script>
-  function userTest() {
-    if(typeof(Storage) !== "undefined") {
-      console.log(localStorage.user);
-      var user = new User();
-      user.fromString(localStorage.user);
-      var name = user.getUsername();
-      console.log(name);
-      document.getElementById("name").innerHTML = document.getElementById("name").innerHTML + name;
+  function greeting() {
+  	var user = "";
+  	if(typeof(Storage) !== "undefined") {
+  		if (localStorage.user == undefined) {
+  			user = "undefined user";
+  		}
+  		else {
+  			var u = new User();
+  			u.fromString(localStorage.user);
+  			user = user.getUsername();
+  		}
+  		var greeting;
+  		var time = new Date().getHours();
+  		if (time < 10) {
+  			greeting = "Good morning";
+  		} else if (time < 20) {
+  			greeting = "Good day";
+  		} else {
+  			greeting = "Good evening";
+  		}
+	  	document.getElementById("greeting").innerHTML = greeting + ", " + user + "!";
     } else {
     alert("Well this didn't work...");
     }
   }
-
-  </script>
+ </script>
   </head>
 
-<body>
-  <button onclick="userTest()">Test for user</button>
-  <div style="color:black" id="name">Name: </div>
-
+<body onload="greeting()">
+  <div id="container">
+  	<div id="navwrap">
+  		<div id="navbg">
+	  		<div class="menu-toggle">
+	  			<a href="#"><img src="img/menu.png"></a>
+	  			<div id="menu-option" style="display: none;">open</div>
+	  		</div>
+	  		<div id="greeting"></div>
+	  	</div>
+	</div>
+	<div id="navdiv">
+		<nav class="main">
+			<ul id="navul" class="grid full" style="display: none;">
+				<li id="myProfile" class="profile"><a href="userHomeScreen.html"><img class="menu-icon" src="img/profile.png">Me</a></li>
+				<li id="myLocation"><a href="location.html"><img class="menu-icon" src="img/location.png">My Location</a></li>
+				<li id="myAlarms" class="reminder" onclick="getCategory('\alarms\')"><img class="menu-icon" src="img/alarm.png">My Alarms</li>
+				<li id="myTasks" class="reminder" onlick="getCategory('\tasks\')"><img class="menu-icon" src="img/task.png">My Tasks</li>
+				<li id="myTasks" class="reminder" onlick="getCategory('\events\')"><img class="menu-icon" src="img/event.png">My Events</li>
+				<li id="myTasks" class="reminder" onlick="getCategory('\other\')"><img class="menu-icon" src="img/other.png">Other Reminders</li>
+				<li id="logout" onlick="logout()"><img class="menu-icon" src="img/logout.png">Logout</li>
+			</ul>
+		</nav>
+	</div>
+	<div id="content">
+		
+		<div id="today">Today</div>
+	    <button>Test for user</button>
+	    <div style="color:black" id="name">Name: </div>
+	</div>
+  </div>
 <!--<script src="phonegap.js"></script>
 <script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript" src="js/index.js"></script>-->

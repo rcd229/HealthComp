@@ -11,8 +11,18 @@
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script type="text/javascript" src="js/user.js"></script>
   <script type="text/javascript" src="js/reminder.js"></script>
-  <!--menu file-->
-  <?php include 'menu.php';?>
+  
+  <nav class="main">
+    <ul class="grid full" id="navul">
+      <li id="myProfile" class="profile" onclick="toProfile()"><img class="menu-icon" src="img/profile.png">Me</li>
+      <li id="myAlarms" class="reminder" onclick="getCategory('\alarms\')"><img class="menu-icon" src="img/alarm.png">My Alarms</li>
+      <li id="myTasks" class="reminder" onlick="getCategory('\tasks\')"><img class="menu-icon" src="img/task.png">My Tasks</li>
+      <li id="myTasks" class="reminder" onlick="getCategory('\events\')"><img class="menu-icon" src="img/event.png">My Events</li>
+      <li id="myTasks" class="reminder" onlick="getCategory('\other\')"><img class="menu-icon" src="img/other.png">Other Reminders</li>
+      <li id="myLocation" onlick="locationPage()"><img class="menu-icon" src="img/location.png">My Location</li>
+      <li id="logout" onlick="logout()"><img class="menu-icon" src="img/logout.png">Logout</li>
+    </ul>
+  </nav>
 
   <script>
 
