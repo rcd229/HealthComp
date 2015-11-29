@@ -7,12 +7,10 @@ $('.menu-toggle').click(function() {
   console.log("yo");
   console.log(el.text());
   if(el.text() == "open"){
-    $('#navdiv').css("z-index", 50);
     $('#navul').show();
     el.text('close');
   }
   else{
-    $('#navdiv').css("z-index",3);
     $('#navul').hide();
     el.text('open');
   };

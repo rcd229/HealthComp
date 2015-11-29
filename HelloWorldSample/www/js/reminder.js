@@ -3,7 +3,9 @@ var Reminder = function(category){
     this.image="";
     this.title="";
     this.description="";
-    this.date="";
+    this.month=null;
+    this.day=null;
+    this.year=null;
     this.time="";
     this.repeat="";
   };
@@ -39,4 +41,8 @@ Reminder.prototype.getTitle = function (){
 Reminder.prototype.timeToString = function() {
     var timestring = date + " at " + time;
     return timestring;
+}
+
+Reminder.prototype.getDate = function() {
+    var date=[this.month, this.day, this.year];
 }

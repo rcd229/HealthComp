@@ -13,19 +13,23 @@
   <script type="text/javascript" src="js/menu.js"></script>
 
   <script>
+  var user;
+  var date;
+
   function greeting() {
-  	var user = "";
+  	var username = "";
   	if(typeof(Storage) !== "undefined") {
   		if (localStorage.user == undefined) {
-  			user = "undefined user";
+  			username = "undefined user";
   		}
   		else {
-  			var u = new User();
-  			u.fromString(localStorage.user);
-  			user = user.getUsername();
+  			user = new User();
+  			user.fromString(localStorage.user);
+  			username = user.getUsername();
   		}
   		var greeting;
-  		var time = new Date().getHours();
+  		date = new Date();
+  		var time = date.getHours();
   		if (time < 10) {
   			greeting = "Good morning";
   		} else if (time < 20) {
@@ -33,15 +37,101 @@
   		} else {
   			greeting = "Good evening";
   		}
-	  	document.getElementById("greeting").innerHTML = greeting + ", " + user + "!";
+	  	document.getElementById("greeting").innerHTML = greeting + ", " + username + "!";
+	  	getToday();
+	  	getLocation();
     } else {
     alert("Well this didn't work...");
     }
   }
- </script>
-  </head>
 
-<body onload="greeting()">
+function getToday() {
+	var count = 0;
+	if (user != undefined) {
+		var month = date.getMonth() + 1;
+		var day = date.getDate();
+		var year = date.getFullYear();
+		console.log("" + month + " " + day + " " + year);
+		var reminders = user.getAllCategories();
+		for (var i = 0; i < reminders.length; i++) {
+			var remdate = reminders[i].getDate();
+			if (remdate[0] == month && remdate[1] == day && remdate[2] == year) {
+				var remtoday = "<div class=\"reminder-today\">there is a reminder today!</div>";
+				document.getElementById("today").innerHTML = document.getElementById("today").innerHTML + remtoday;
+				count++; 
+			}
+		}
+	}
+	if (count == 0) {
+		document.getElementById("today").innerHTML = document.getElementById("today").innerHTML + "No reminders today!";
+	}
+
+}
+
+function getLocation() {
+	if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else {
+        document.getElementById("location-home").innerHTML = "Geolocation is not supported by this browser.";
+    }
+
+}
+
+function showPosition(position) {
+    var latlon = position.coords.latitude + "," + position.coords.longitude;
+
+    var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
+    +latlon+"&zoom=14&size=400x300&sensor=false";
+    document.getElementById("location-home").innerHTML = "<img src='"+img_url+"'>";
+}
+
+function showError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            document.getElementById("location-home").innerHTML = "User denied the request for Geolocation."
+            break;
+        case error.POSITION_UNAVAILABLE:
+            document.getElementById("location-home").innerHTML = "Location information is unavailable."
+            break;
+        case error.TIMEOUT:
+            document.getElementById("location-home").innerHTML = "The request to get user location timed out."
+            break;
+        case error.UNKNOWN_ERROR:
+            document.getElementById("location-home").innerHTML = "An unknown error occurred."
+            break;
+    }
+}
+
+function logout() {
+  console.log("logged out");
+  if(typeof(Storage) !== "undefined") {
+      if (localStorage.user != undefined) {
+        localStorage.removeItem("user");
+      }
+    }
+  else {
+    alert('lol...');
+  }
+  setTimeout(function() {
+    window.location.href = "index.html"
+  },2000);
+}
+
+</script>
+
+<script>
+$( document ).ready(function() {
+	//get user greeting
+	greeting();
+
+	//get today's reminders
+	getToday();
+});
+
+</script>
+</head>
+
+<body>
   <div id="container">
   	<div id="navwrap">
   		<div id="navbg">
@@ -55,21 +145,59 @@
 	<div id="navdiv">
 		<nav class="main">
 			<ul id="navul" class="grid full" style="display: none;">
-				<li id="myProfile" class="profile"><a href="userHomeScreen.html"><img class="menu-icon" src="img/profile.png">Me</a></li>
-				<li id="myLocation"><a href="location.html"><img class="menu-icon" src="img/location.png">My Location</a></li>
-				<li id="myAlarms" class="reminder" onclick="getCategory('\alarms\')"><img class="menu-icon" src="img/alarm.png">My Alarms</li>
-				<li id="myTasks" class="reminder" onlick="getCategory('\tasks\')"><img class="menu-icon" src="img/task.png">My Tasks</li>
-				<li id="myTasks" class="reminder" onlick="getCategory('\events\')"><img class="menu-icon" src="img/event.png">My Events</li>
-				<li id="myTasks" class="reminder" onlick="getCategory('\other\')"><img class="menu-icon" src="img/other.png">Other Reminders</li>
-				<li id="logout" onlick="logout()"><img class="menu-icon" src="img/logout.png">Logout</li>
+				<li id="myProfile" class="profile">
+          <a href="userHomeScreen.html"><img class="menu-icon" src="img/profile.png">Me</a>
+        </li>
+				<li id="myLocation">
+          <a href="location.html"><img class="menu-icon" src="img/location.png">My Location</a>
+        </li>
+				<li id="myAlarms" class="reminder">
+          <a href="alarmPage.html"><img class="menu-icon" src="img/alarm.png">My Alarms</a>
+        </li>
+				<li id="myTasks" class="reminder">
+          <a href="taskPage.html"><img class="menu-icon" src="img/task.png">My Tasks</a>
+        </li>
+				<li id="myTasks" class="reminder">
+          <a href="eventPage.html"><img class="menu-icon" src="img/event.png">My Events</a>
+        </li>
+				<li id="myTasks" class="reminder">
+          <a href="otherPage.html"><img class="menu-icon" src="img/other.png">Other Reminders</a>
+        </li>
+				<li id="logout">
+          <a href="#" onclick="logout()"><img class="menu-icon" src="img/logout.png">Logout</a>
+        </li>
 			</ul>
 		</nav>
 	</div>
-	<div id="content">
-		
-		<div id="today">Today</div>
-	    <button>Test for user</button>
-	    <div style="color:black" id="name">Name: </div>
+	
+  <div id="content">	
+		<div id="today">
+			<div class="heading">Today</div>
+		</div>
+		<div id="location-home"></div>
+    <div id="home-buttons">
+      <div class="grid-fourth">
+        <a href="alarmPage.html">
+        <img class="menu-icon-large" src="img/alarm.png">
+        <div class="button-label">My Alarms</div>
+        </a>
+      </div>
+      <div class="grid-fourth">
+        <a href="taskPage.html">
+          <img class="menu-icon-large" src="img/task.png">
+          <div class="button-label">My Tasks</div></div>
+        </a>
+      <div class="grid-fourth">
+        <a href="eventPage.html">
+          <img class="menu-icon-large" src="img/event.png">
+          <div class="button-label">My Events</div></div>
+        </a>
+      <div class="grid-fourth">
+        <a href="otherPage.html">
+          <img class="menu-icon-large" src="img/other.png">
+          <div class="button-label">Other Reminders</div></div>
+        </a>
+    </div>
 	</div>
   </div>
 <!--<script src="phonegap.js"></script>
