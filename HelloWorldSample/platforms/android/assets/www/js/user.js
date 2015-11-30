@@ -49,6 +49,10 @@ User.prototype.getCategory = function(category) {
 	}
 };
 
+User.prototype.getAllCategories = function() {
+	return this.alarms.concat(this.events.concat(this.tasks.concat(this.other)));
+}
+
 User.prototype.toString = function(){
 	return this.username + "\n" + this.password + "\n" + this.alarms.toString() + "\n" + this.events.toString() + "\n" + this.tasks.toString() + "\n" + this.other.toString(); 
 }

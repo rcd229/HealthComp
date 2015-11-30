@@ -1,6 +1,6 @@
 var Reminder = function(category){
     this.category = category;
-    this.image="";
+    this.picture="";
     this.title="";
     this.description="";
     this.month=null;
@@ -10,8 +10,8 @@ var Reminder = function(category){
     this.repeat="";
   };
 
-Reminder.prototype.setImage = function (photourl){
-	this.photo = photourl;
+Reminder.prototype.setPicture = function (photourl){
+	this.picture = photourl;
 }
 
 Reminder.prototype.setTitle = function (title){
@@ -30,12 +30,16 @@ Reminder.prototype.setRepeat = function (repeat){
 	this.repeat = repeat;
 }
 
-Reminder.prototype.getImage = function() {
-    return this.image;
+Reminder.prototype.getPicture = function() {
+    return this.picture;
 }
 
 Reminder.prototype.getTitle = function (){
     return this.title;
+}
+
+Reminder.prototype.getDescription = function(){
+	return this.description;
 }
 
 Reminder.prototype.timeToString = function() {

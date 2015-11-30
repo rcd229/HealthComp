@@ -14,29 +14,34 @@
   <script>
   function toYourHome() {
     var username = document.getElementById("username").value;
+    console.log("username = " + username);
     var password = document.getElementById("password").value;
-    var user = new User();
-    user.setUsername(username);
-    user.setPassword(password);
-    console.log(user);
-    if(typeof(Storage) !== "undefined") {
-      localStorage.user = user.toString();
-    } else {
-      alert("Cannot store locally :(");
+    if (username!="" && password!="") {
+      var user = new User();
+      user.setUsername(username);
+      user.setPassword(password);
+      if(typeof(Storage) !== "undefined") {
+        localStorage.user = user.toString();
+      } else {
+        alert("Cannot store locally :(");
+      }
+      window.location.href = "userHomeScreen.html";  
     }
-    window.location.href = "userHomeScreen.html";
+    else {
+      alert("Please enter username and password!");
+    }
   }
 
   </script>
 </head>
 
 <body id="loginscreen">
-<div id="container">
+<div id="container-home">
   <div id="loginbox">
     <h2>Login</h2>
     <form>
-      <div id="logininfo">Username: <input id="username"></div>
-      <div id="logininfo">Password: <input id="password" type="password"></div>
+      <div id="logininfo">Username: <input id="username" class="logininfo"></div>
+      <div id="logininfo">Password: <input id="password" class="logininfo" type="password"></div>
     </form>
     <button id="login-go" onclick="toYourHome()">GO!</button>
   </div>

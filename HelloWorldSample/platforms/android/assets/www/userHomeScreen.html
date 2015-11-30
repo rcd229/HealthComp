@@ -10,28 +10,146 @@
   <link rel="stylesheet" type="text/css" href="css/style.css" />
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script type="text/javascript" src="js/user.js"></script>
+  <script type="text/javascript" src="js/menu.js"></script>
 
   <script>
-  function userTest() {
-    if(typeof(Storage) !== "undefined") {
-      console.log(localStorage.user);
-      var user = new User();
-      user.fromString(localStorage.user);
-      var name = user.getUsername();
-      console.log(name);
-      document.getElementById("name").innerHTML = document.getElementById("name").innerHTML + name;
+  var user;
+  var date;
+
+  function greeting() {
+  	var username = "";
+  	if(typeof(Storage) !== "undefined") {
+  		if (localStorage.user == undefined) {
+  			username = "undefined user";
+  		}
+  		else {
+  			user = new User();
+  			user.fromString(localStorage.user);
+  			username = user.getUsername();
+  		}
+  		var greeting;
+  		date = new Date();
+  		var time = date.getHours();
+  		if (time < 10) {
+  			greeting = "Good morning";
+  		} else if (time < 20) {
+  			greeting = "Good day";
+  		} else {
+  			greeting = "Good evening";
+  		}
+	  	document.getElementById("greeting").innerHTML = greeting + ", " + username + "!";
+	  	getToday();
+	  	getLocation();
     } else {
     alert("Well this didn't work...");
     }
   }
 
-  </script>
-  </head>
+function getToday() {
+	var count = 0;
+	if (user != undefined) {
+		var month = date.getMonth() + 1;
+		var day = date.getDate();
+		var year = date.getFullYear();
+		console.log("" + month + " " + day + " " + year);
+		var reminders = user.getAllCategories();
+		for (var i = 0; i < reminders.length; i++) {
+			var remdate = reminders[i].getDate();
+			if (remdate[0] == month && remdate[1] == day && remdate[2] == year) {
+				var remtoday = "<div class=\"reminder-today\">there is a reminder today!</div>";
+				document.getElementById("today").innerHTML = document.getElementById("today").innerHTML + remtoday;
+				count++; 
+			}
+		}
+	}
+	if (count == 0) {
+		document.getElementById("today").innerHTML = document.getElementById("today").innerHTML + "No reminders today!";
+	}
+
+}
+
+function getLocation() {
+	if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(showPosition, showError);
+    } else {
+        document.getElementById("location-home").innerHTML = "Geolocation is not supported by this browser.";
+    }
+
+}
+
+function showPosition(position) {
+    var latlon = position.coords.latitude + "," + position.coords.longitude;
+
+    var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
+    +latlon+"&zoom=14&size=400x300&sensor=false";
+    document.getElementById("location-home").innerHTML = "<img src='"+img_url+"'>";
+}
+
+function showError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            document.getElementById("location-home").innerHTML = "User denied the request for Geolocation."
+            break;
+        case error.POSITION_UNAVAILABLE:
+            document.getElementById("location-home").innerHTML = "Location information is unavailable."
+            break;
+        case error.TIMEOUT:
+            document.getElementById("location-home").innerHTML = "The request to get user location timed out."
+            break;
+        case error.UNKNOWN_ERROR:
+            document.getElementById("location-home").innerHTML = "An unknown error occurred."
+            break;
+    }
+}
+
+</script>
+
+<script>
+$( document ).ready(function() {
+	//get user greeting
+	greeting();
+
+	//get today's reminders
+	getToday();
+});
+
+</script>
+</head>
 
 <body>
-  <button onclick="userTest()">Test for user</button>
-  <div style="color:black" id="name">Name: </div>
-
+  <div id="container">
+  	<div id="navwrap">
+  		<div id="navbg">
+	  		<div class="menu-toggle">
+	  			<a href="#"><img src="img/menu.png"></a>
+	  			<div id="menu-option" style="display: none;">open</div>
+	  		</div>
+	  		<div id="greeting"></div>
+	  	</div>
+	</div>
+	<div id="navdiv">
+		<nav class="main">
+			<ul id="navul" class="grid full" style="display: none;">
+				<li id="myProfile" class="profile"><a href="userHomeScreen.html"><img class="menu-icon" src="img/profile.png">Me</a></li>
+				<li id="myLocation"><a href="location.html"><img class="menu-icon" src="img/location.png">My Location</a></li>
+				<li id="myAlarms" class="reminder" onclick="getCategory('\alarms\')"><img class="menu-icon" src="img/alarm.png">My Alarms</li>
+				<li id="myTasks" class="reminder" onlick="getCategory('\tasks\')"><img class="menu-icon" src="img/task.png">My Tasks</li>
+				<li id="myTasks" class="reminder" onlick="getCategory('\events\')"><img class="menu-icon" src="img/event.png">My Events</li>
+				<li id="myTasks" class="reminder" onlick="getCategory('\other\')"><img class="menu-icon" src="img/other.png">Other Reminders</li>
+				<li id="logout" onlick="logout()"><img class="menu-icon" src="img/logout.png">Logout</li>
+			</ul>
+		</nav>
+	</div>
+	<div id="content">
+		
+		<div id="today">
+			<div class="heading">Today</div>
+		</div>
+		<div id="location-home"></div>
+	    <button>Test for user</button>
+	    <div style="color:black" id="name">Name: </div>
+	</div>
+  </div>
 <!--<script src="phonegap.js"></script>
 <script type="text/javascript" src="cordova.js"></script>
 <script type="text/javascript" src="js/index.js"></script>-->

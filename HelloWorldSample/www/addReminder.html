@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+  <title>Mindependence | Add a Reminder</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script type="text/javascript" src="js/user.js"></script>
+  <script type="text/javascript" src="js/menu.js"></script>
+  <script type="text/javascript" src="js/reminder.js"></script>
+
+  <script>
+  var reminder;
+  var currentTitle;
+  var currentType = "category";
+  var month;
+  var day;
+  var year;
+
+  function greeting(){
+  	var username = "";
+  	if(typeof(Storage) !== "undefined") {
+  		if (localStorage.user == undefined) {
+  			username = "undefined user";
+  		}
+  		else {
+  			user = new User();
+  			user.fromString(localStorage.user);
+  			username = user.getUsername();
+  		}
+  		var greeting;
+  		date = new Date();
+  		var time = date.getHours();
+  		if (time < 10) {
+  			greeting = "Good morning";
+  		} else if (time < 20) {
+  			greeting = "Good day";
+  		} else {
+  			greeting = "Good evening";
+  		}
+	  	document.getElementById("greeting").innerHTML = greeting + ", " + username + "!";
+	  	getToday();
+	  	getLocation();
+    } else {
+    alert("Well this didn't work...");
+    }
+  }
+
+function getToday() {
+  var today = new Date();
+  month = today.getMonth();
+  day = today.getDate();
+  year = today.getFullYear();
+}
+
+function toType(category) {
+  reminder = new Reminder(category);
+  var other = addPicture("img/other-icon.png", "Other (set a title!)");
+  if (category == "alarm") {
+    //go to alarm options (medicine, wake up, sleep ,other)
+    var medication = addPicture("img/medication.png", "Take medication");
+    var wakeup = addPicture("img/wakeup.png", "Wake up!");
+    var sleep = addPicture("img/sleep.png", "Go to bed");
+    document.getElementById("type-pictures").innerHTML = medication+wakeup+sleep+other;
+  }
+  else if (category == "task") {
+    //go to task options (groceries, shopping, cleaning, other)
+    var groceries = addPicture("img/groceries.png", "Get groceries");
+    var shopping = addPicture("img/shopping.png", "Go shopping");
+    var cleaning = addPicture("img/cleaning.png", "Clean up");
+    document.getElementById("type-pictures").innerHTML = groceries+shopping+cleaning+other;
+  }
+  else if (category == "event") {
+    //go to event options (meeting, meetup, appointment, other)
+    var meeting = addPicture("img/meeting.png", "Meeting");
+    var meetup = addPicture("img/meetup.png", "Meet-up");
+    var appointment = addPicture("img/appointment.png", "Appointment");
+    document.getElementById("type-pictures").innerHTML = meeting+meetup+appointment+other;
+    
+  }
+  else {
+    //go to other options - just add picture
+    document.getElementById("type-pictures").innerHTML =other;
+  }
+  currentType = "type";
+  document.getElementById("category").style.display = 'none';
+  document.getElementById("type").style.display = 'block';
+}
+
+function addPicture(src, title) {
+  var picdiv = "<button onclick=\"setPic('"+ src + "','" + title + "')\" class=\"rem-pic\"><img src=" + src + "><div id=\"title-option\">" + title + "</div></button>";
+  return picdiv;
+}
+
+function setPic(src,title) {
+  reminder.setPicture(src);
+  document.getElementById("input-title").value = title;
+}
+
+function previous() {
+  if (currentType == "type") {
+    document.getElementById("type").style.display = 'none';
+    document.getElementById("category").style.display = 'block';
+  }
+  else {
+    //current type is setting date, so go back to title/description page
+    document.getElementById("date").style.display = 'none';
+    document.getElementById("type").style.display = 'block';
+  }
+}
+
+function toDate(){
+  if (document.getElementById("input-title").value == "") {
+    //no photo has been clicked, so no reminder has been selected
+    alert("Make sure you've selected a picture and a title!");
+  }
+  else {
+    //set title
+    var title = document.getElementById("input-title").value;
+    reminder.setTitle(title);
+
+    //set description
+    var description = document.getElementById("input-description").value;
+    reminder.setDescription(description);
+
+    console.log(reminder);
+
+    document.getElementById("type").style.display = 'none';
+    document.getElementById("date").style.display = 'block';
+  }
+}
+</script>
+
+</head>
+
+<body onload="getToday()">
+  <div id="container">
+  	<div id="navwrap">
+  		<div id="navbg">
+	  		<div class="menu-toggle">
+	  			<a href="#"><img src="img/menu.png"></a>
+	  			<div id="menu-option" style="display: none;">open</div>
+	  		</div>
+        <div id="greeting">Add a Reminder</div>
+	  		<div class="add">
+	  			<a href="addReminder.html"><img src="img/plus-icon.png"></a>
+	  		</div>
+	  	</div>
+    </div>
+  	<div id="navdiv">
+  		<nav class="main">
+  			<ul id="navul" class="grid full" style="display: none;">
+  				<li id="myProfile" class="profile">
+            <a href="userHomeScreen.html"><img class="menu-icon" src="img/profile.png">Me</a>
+          </li>
+  				<li id="myLocation">
+            <a href="location.html"><img class="menu-icon" src="img/location.png">My Location</a>
+          </li>
+  				<li id="myAlarms" class="reminder">
+            <a href="alarmPage.html"><img class="menu-icon" src="img/alarm.png">My Alarms</a>
+          </li>
+  				<li id="myTasks" class="reminder">
+            <a href="taskPage.html"><img class="menu-icon" src="img/task.png">My Tasks</a>
+          </li>
+  				<li id="myTasks" class="reminder">
+            <a href="eventPage.html"><img class="menu-icon" src="img/event.png">My Events</a>
+          </li>
+  				<li id="myTasks" class="reminder">
+            <a href="otherPage.html"><img class="menu-icon" src="img/other.png">Other Reminders</a>
+          </li>
+  				<li id="logout">
+            <a href="#" onclick="logout()"><img class="menu-icon" src="img/logout.png">Logout</a>
+          </li>
+  			</ul>
+  		</nav>
+  	</div>
+    <div id="content">
+      <div id="category">
+        <div id="choose-heading" class="heading">Choose a Category</div>
+        <div class="square-fourth top left">
+          <button class="reminder-selection" onclick="toType('alarm')">
+          <img class="add-icon" src="img/alarm.png">
+          <div class="add-label">Alarm</div>
+          </button>
+        </div>
+        <div class="square-fourth top">
+          <button class="reminder-selection" onclick="toType('task')">
+          <img class="add-icon" src="img/task.png">
+          <div class="add-label">Task</div>
+          </button>
+        </div>
+        <div class="square-fourth left">
+          <button class="reminder-selection" onclick="toType('event')">
+          <img class="add-icon" src="img/event.png">
+          <div class="add-label">Event</div>
+          </button>
+        </div>
+        <div class="square-fourth">
+          <button class="reminder-selection" onclick="toType('other')">
+          <img class="add-icon" src="img/other.png">
+          <div class="add-label">Other</div>
+          </button>
+        </div>
+      </div>
+      <div id="type" style="display:none;">
+        <div id="type-pictures">
+        </div>
+        <div id="rem-title">Title<input type="text" id="input-title"></div>
+        <div id="rem-description">Description<input type="text" id="input-description"></div>
+        <div id="continue">
+          <button id="previous" onclick="previous()"><img src="img/previous-arrow.png"></button>
+          <button id="next" onclick="toDate()"><img src="img/next-arrow.png"></button>
+        </div>
+      </div>
+      <div id="date" style="display:none;">
+        <form id="calendar-select">
+          <select name="month">
+            <option value="0">January</option>
+            <option value="1">February</option>
+            <option value="2">March</option>
+            <option value="3">April</option>
+            <option value="4">May</option>
+            <option value="5">June</option>
+            <option value="6">July</option>
+            <option value="7">August</option>
+            <option value="8">September</option>
+            <option value="9">October</option>
+            <option value="10">November</option>
+            <option value="11" selected="selected">December</option>
+          </select>
+          <select name="day">
+            <option value="1">01</option>
+            <option value="2" selected="selected">01</option>
+            <option value="3">01</option>
+            <option value="4">01</option>
+            <option value="5">01</option>
+            <option value="6">01</option>
+            <option value="7">01</option>
+            <option value="8">01</option>
+            <option value="9">01</option>
+            <option value="10">10</option>
+            <option value="11">10</option>
+            <option value="12">10</option>
+            <option value="13">10</option>
+            <option value="14">10</option>
+            <option value="15">10</option>
+            <option value="16">10</option>
+            <option value="17">10</option>
+            <option value="18">10</option>
+            <option value="19">10</option>
+            <option value="20">20</option>
+            <option value="21">20</option>
+            <option value="22">20</option>
+            <option value="23">20</option>
+            <option value="24">20</option>
+            <option value="25">20</option>
+            <option value="26">20</option>
+            <option value="27">20</option>
+            <option value="28">20</option>
+            <option value="29">20</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+          </select>
+          <select name="year">
+            <option value="2015" selected="selected">2015</option>
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
+            <option value="2018">2018</option>
+            <option value="2019">2019</option>
+            <option value="2020">2020</option>
+          </select>
+        </form>
+      </div>
+  	</div>
+  </div>
+<!--<script src="phonegap.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/index.js"></script>-->
+</body>
+</html>
