@@ -5,6 +5,7 @@ body {
 	margin: 0;
 	min-height: 100%;
 	display:block;
+	font-family: Raleway;
 }
 
 header {
@@ -22,10 +23,25 @@ button {
 	cursor: pointer;
 }
 
+button:focus {
+	border: none;
+}
+
 a {
 	font-family: Raleway;
 	color: white;
 	text-decoration: none;
+	height: inherit;
+	display: block;
+}
+
+input {
+	font-family: Raleway;
+	font-weight: normal;
+}
+
+select {
+	font-family: Raleway;
 }
 
 /*---------------------------------------------------------------*/
@@ -175,11 +191,13 @@ div#navwrap {
 	font-size:2em;
 	margin:auto;
 	text-align: center;
-	width: 80%;
-	padding: 1.6%;
+	width: 90%;
+	padding-top: 0.7%;
+	float: left;
 }
 
 .menu-toggle {
+	width: 5%;
 	height: inherit;
 	display: block;
 	float: left;
@@ -200,18 +218,34 @@ div#navwrap {
 		padding: 18%;
 	}
 
+.add {
+	width: 5%;
+	float: right;
+	height: inherit;
+}
+	.add a {
+		width: inherit;
+		padding: 20% 25% 20% 20%;
+	}
+
+	.add img {
+		height: 60%;
+		margin: 4%;
+	}
+
 #navdiv {
 	padding: 0;
 	margin-top:10vh;
-	width: 100%;
+	width: 33%;
 	max-width: 100%;
 	height: 90vh;
 	position: fixed;
+	z-index: 3;
 
 }
 
 nav.main {
-	width: 33%;
+	width: 100%;
 	background-color: #43E882;
 	font-family: Raleway;
 	color: white;
@@ -261,9 +295,11 @@ img.menu-icon {
 /*---------------------------------------------------------------*/
 
 #content {
-	height: 90vh;
 	background-color: white;
 	margin-top: 10vh;
+	max-height: 90vh;
+	position: relative;
+	z-index: 5;
 }
 
 #content div {
@@ -272,9 +308,13 @@ img.menu-icon {
 
 #today, #location-home {
 	width: 50%;
-	height: 50vh;
+	height: 70vh;
 	display:block;
 	float:left;
+}
+
+#location-home img {
+	width: 100%;
 }
 
 #content div.heading {
@@ -286,6 +326,164 @@ img.menu-icon {
 	color: white;
 }
 
+#home-buttons {
+	height: 20vh;
+	display:block;
+	float:left;
+	width: 100%;
+}
+
+.grid-fourth {
+	width:18.67%;
+	text-align: center;
+	display: block;
+	float: left;
+	background-color: #43E882;
+	border-right: 1px solid white;
+	height: inherit;
+}
+	
+	.grid-fourth a, .button-center a {
+		display: block;
+		height:inherit;
+		margin:auto;
+	}
+
+.button-center {
+	width:25%;
+	text-align: center;
+	display: block;
+	float: left;
+	background-color: black;
+	border-right: 1px solid white;
+	height: inherit;
+}
+
+.button-last {
+	border:none;
+}
+
+.menu-icon-large {
+	width: auto;
+	margin: auto;
+	height: 60%;
+	padding: 3%;
+}
+
+#content div.button-label {
+	color: white;
+	font-weight: bold;
+}
+
+/*---------------------------------------------------------------*/
+/*---------------------------------------------------------------*/
+/*------------------------Add Reminder stuff---------------------*/
+/*---------------------------------------------------------------*/
+/*---------------------------------------------------------------*/
+
+#content div#choose-heading {
+	padding: 0;
+	height: 10vh;
+	line-height: 10vh;
+	font-size: 1.7em;
+}
+
+.square-fourth {
+	height: 40vh;
+	width: 49.95%;
+	float:left;
+	background-color:#43E882;
+	text-align: center;
+	color: white;
+	text-decoration: bold;
+	font-size: 1.5em;
+}
+
+.square-fourth.left {
+	border-right: 1px solid white;
+}
+
+.square-fourth.top {
+	border-bottom: 1px solid white;
+}
+
+.add-icon {
+	height: 60%;
+}
+
+#content div.add-label {
+	color: white;
+}
+
+button.reminder-selection {
+	display: block;
+	height: inherit;
+	width:100%;
+	background-color:#43E882;
+	margin:0;
+	padding: 0;
+	border: 0;
+	font-size: 1em;
+}
+
+#type-pictures {
+	width: 100%;
+	max-width: 100%;
+	height: 40vh;
+	max-height: 40vh;
+	text-align: center;
+}
+
+button.rem-pic{
+	width: 25%;
+	margin:0;
+	padding:2%;
+	background-color:white;
+	border:none;
+	height: inherit;
+}
+	.rem-pic img {
+		height: 75%;
+		width: auto;
+		border:1px solid silver;
+	}
+
+#rem-title, #rem-description {
+	text-align: center;
+	font-size: 2em;
+	margin-bottom: 2%;
+	font-weight: bold;
+}
+	#input-title, #input-description {
+		font-size: 1em;
+		margin-left: 1%;
+	}
+
+#continue {
+	text-align: center;
+	width: 20%;
+	margin:auto;
+	height: 25vh;
+}
+
+#previous, #next {
+	border: none;
+	background-color: white;
+	margin: 0;
+	padding: 0;
+	height: inherit;
+}
+
+#previous {
+	float: left;
+}
+
+#next {
+	float: right;
+}
+	#previous img, #next img {
+		height: 50%;
+	}
 
 /*---------------------------------------------------------------*/
 /*-----------------------500px screen----------------------------*/
@@ -328,12 +526,32 @@ div#loginbox {
 		font-size: 2em;
 	}
 
-nav.main {
+#navbg {
+	height: 20vh;
+}
+
+#navdiv {
+	margin-top: 20vh;
+	height:80vh;
 	width: 45%;
 }
 
 nav.main ul li {
 	font-size: 0.7em;
+	height: 11.42vh;
+}
+
+#content {
+	margin-top: 20vh;
+	overflow-y:scroll;
+}
+
+#today, #location-home {
+	width: 100%;
+}
+
+#home-buttons {
+	height: auto;
 }
 
 }

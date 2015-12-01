@@ -5,6 +5,7 @@ body {
 	margin: 0;
 	min-height: 100%;
 	display:block;
+	font-family: Raleway;
 }
 
 header {
@@ -34,9 +35,17 @@ a {
 	display: block;
 }
 
+a:hover {
+	cursor: pointer;
+}
+
 input {
 	font-family: Raleway;
 	font-weight: normal;
+}
+
+select {
+	font-family: Raleway;
 }
 
 /*---------------------------------------------------------------*/
@@ -304,9 +313,48 @@ img.menu-icon {
 #today, #location-home {
 	width: 50%;
 	height: 70vh;
+	max-height: 70vh;
+	overflow-y:scroll;
 	display:block;
 	float:left;
 }
+	.reminder-today {
+		height: 15vh;
+		border-bottom: 1px solid silver;
+	}
+
+	.reminder-today button.main {
+		border: none;
+		height:inherit;
+		margin:0;
+		padding:0;
+		background:none;
+	}
+
+	.reminder-today img {
+		width: 10%;
+		margin-right:1%;
+		margin-left:1%;
+		height: auto;
+		margin-top: 2%;
+		float: left;
+	}
+
+	.list-title {
+		width: 88%;
+		float: left;
+		font-size: 2em;
+		margin-top: 2%;
+		text-align: left;
+	}
+
+	.list-time {
+		width: 88%;
+		float: left;
+		color: silver;
+		font-size: 1.5em;
+		text-align: left;
+	}
 
 #location-home img {
 	width: 100%;
@@ -461,12 +509,17 @@ button.rem-pic{
 	height: 25vh;
 }
 
-#previous, #next {
+#previous, #next, #set-rem {
 	border: none;
 	background-color: white;
 	margin: 0;
 	padding: 0;
 	height: inherit;
+}
+
+#set-rem img {
+	height: 65%;
+	margin-top: 20px;
 }
 
 #previous {
@@ -478,6 +531,63 @@ button.rem-pic{
 }
 	#previous img, #next img {
 		height: 50%;
+	}
+
+#date {
+	text-align: center;
+}
+	
+	#calendar-select, #time-select {
+		margin-top: 3%;
+		font-size: 1.5em;
+		height: 20vh;
+		line-height: 10vh;
+		width: 50%;
+		float: left;
+	}
+
+	#calendar-today, #calendar-tomorrow, #morning-button, #afternoon-button, #evening-button {
+		display: inline-block;
+		margin-right: 2%;
+		height: 60%;
+	}
+
+	#calendar-today a, #calendar-tomorrow a, #morning-button a, #afternoon-button a, #evening-button a, a.post-rem {
+		padding: 10px;
+		height: inherit;
+		line-height: inherit;
+		background: linear-gradient(white,silver);
+		border: 1px solid black;
+		display: inline;
+		font-size: 0.7em;
+	}
+
+	#date select {
+		font-size: 1em;
+	}
+
+	#repeat-select {
+		font-size: 1.5em;
+	}
+
+#set-complete {
+	font-size: 3em;
+	font-family: Lobster;
+	height:40vh;
+	line-height: 40vh;
+	text-align: center;
+}
+
+	#post-rem-buttons {
+		text-align: center;
+	}
+
+	a.post-rem {
+		font-size: 2em;
+		padding: 10px;
+		margin-left: 1%;
+		margin-right: 1%;
+		color: black;
 	}
 
 /*---------------------------------------------------------------*/
