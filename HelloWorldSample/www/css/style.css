@@ -1092,4 +1092,8 @@ nav.main ul li {
 	height: auto;
 }
 
+.login-text {
+	margin-left:0;
+}
+
 }
