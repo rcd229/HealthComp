@@ -14,6 +14,7 @@
   <script src="js/jquery-ui.min.js"></script>
   <script type="text/javascript" src="js/user.js"></script>
   <script type="text/javascript" src="js/menu.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js"></script>
 
   <script>
   var user;
@@ -109,7 +110,16 @@ function getLocation() {
 
 function showPosition(position) {
     var latlon = position.coords.latitude + "," + position.coords.longitude;
+    /*var map = new google.maps.Map(document.getElementById('location-home'), {
+      zoom: 4,
+      center: latlon
+    });
 
+    var marker = new google.maps.Marker({
+      position: latlon,
+      map: map,
+      title: ''
+    });*/
     var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
     +latlon+"&zoom=14&size=400x300&sensor=false";
     document.getElementById("location-home").innerHTML = "<img src='"+img_url+"'>";
@@ -162,7 +172,7 @@ $( document ).ready(function() {
   },50000);
   setTimeout(function(){
       $( "#dialog" ).dialog( "close" );
-    },52500);
+    },60000);
 
   $( "#dialog" ).dialog({
     autoOpen: false,
@@ -186,7 +196,7 @@ $( document ).ready(function() {
   console.log("logged out");
   if(typeof(Storage) !== "undefined") {
       if (localStorage.user != undefined) {
-        //localStorage.removeItem("user");
+        localStorage.removeItem("user");
       }
     }
   else {
@@ -241,7 +251,7 @@ $( document ).ready(function() {
           <a href="otherPage.html"><img class="menu-icon" src="img/other.png">Other Reminders</a>
         </li>
 				<li id="logout">
-          <a href="#" onclick="logout()"><img class="menu-icon" src="img/logout.png">Logout</a>
+          <a href="index.html"><img class="menu-icon" src="img/logout.png">Logout</a>
         </li>
 			</ul>
 		</nav>

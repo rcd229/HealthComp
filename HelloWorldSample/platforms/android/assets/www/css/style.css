@@ -1063,6 +1063,7 @@ button.rem-pic{
 /*---------------------------------------------------------------*/
 @media screen and (max-width: 320px) {
 
+
 div#logo h3 {
 	font-size: 1em;
 }
@@ -1080,7 +1081,9 @@ button#login-button {
 	font-size:1.5em;
 }
 
-
+#location-home {
+	height: auto;
+}
 
 nav.main ul li {
 	font-size: 0.7em;
@@ -1090,6 +1093,10 @@ nav.main ul li {
 
 #home-buttons {
 	height: auto;
+}
+
+.login-text {
+	margin-left:0;
 }
 
 }
