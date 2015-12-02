@@ -1,0 +1,18 @@
+
+- background location check 
+- background reminder notification check
+	- do you need this reminder? yes/no
+		- track (counter) for YES by title and time
+	- reminder popup
+- location page
+	- add location
+
+
+
+- home page:
+	- today box
+		- figure out how to remove reminders
+		- click reminders to bring up full reminder (maybe)
+		- sort by time
+
+GalaxyS6+

@@ -70,6 +70,7 @@ div#logo {
 	width: 85%;
 	margin:auto;
 	height: 85vh;
+	color: white;
 }
 
 	div#logo div.filler {
@@ -86,15 +87,18 @@ div#logo {
 		font-size: 8em;
 		text-align: center;
 		margin: 0;
+		width: 100%;
 	}
 		div#logo h1 div.logo-1 {
 			font-family: Lobster;
 			display:inline;
+			color: white;
 		}
 
 		div#logo h1 div.logo-2 {
 			font-family: Raleway;
 			display:inline;
+			color:white;
 		}
 
 	div#underline {
@@ -130,11 +134,10 @@ body#loginscreen {
 }
 
 div#loginbox {
-	width: 80%;
+	width: 400px;
 	margin: auto;
 	background-color: white;
-	border-top: 5px solid silver;
-	border-bottom: 5px solid silver;
+	border: 5px solid silver;
 	text-align: center;
 	height: auto;
 	margin-top: 30vh;
@@ -148,20 +151,30 @@ div#loginbox {
 	}
 
 	div#loginbox form {
-		margin-top: 5%;
-		margin-bottom:5%;
+		margin-top: 20px;
+		margin-bottom:20px;
 	}
 
 		div#logininfo {
 			color: black;
 			text-align: center;
-			padding-bottom: 15px;
+			padding-bottom: 35px;
 			font-size: 1em;
-			width: 85%;
+			width: 80%;
 			margin: auto;
 		}
+
+			.login-text {
+				text-align: center;
+				float:left;
+				width:27%;
+				margin-left:14%;
+				margin-right:2%;
+			}
+
 			input.logininfo {
-				float:right;
+				float:left;
+				width: 55%;
 			}
 
 	div#loginbox button#login-go {
@@ -186,8 +199,9 @@ div#navwrap {
 }
 
 #navbg {
-		height: 10vh;
+		height: 60px;
 		color: white;
+		line-height: 60px;
 }
 
 #greeting {
@@ -196,8 +210,8 @@ div#navwrap {
 	margin:auto;
 	text-align: center;
 	width: 90%;
-	padding-top: 0.7%;
 	float: left;
+	color:white;
 }
 
 .menu-toggle {
@@ -219,7 +233,7 @@ div#navwrap {
 
 	.menu-toggle a {
 		float: left;
-		padding: 18%;
+		padding: 12px;
 	}
 
 .add {
@@ -228,18 +242,18 @@ div#navwrap {
 	height: inherit;
 }
 	.add a {
-		width: inherit;
-		padding: 20% 25% 20% 20%;
+		width: auto;
+		padding: 10px;
 	}
 
 	.add img {
-		height: 60%;
+		height: 40px;
 		margin: 4%;
 	}
 
 #navdiv {
 	padding: 0;
-	margin-top:10vh;
+	margin-top:60px;
 	width: 33%;
 	max-width: 100%;
 	height: 90vh;
@@ -300,13 +314,15 @@ img.menu-icon {
 
 #content {
 	background-color: white;
-	margin-top: 10vh;
+	margin-top: 60px;
 	max-height: 90vh;
 	position: relative;
 	z-index: 5;
+	height:90vh;
+	overflow-y:scroll;
 }
 
-#content div {
+div {
 	color: black;
 }
 
@@ -318,33 +334,47 @@ img.menu-icon {
 	display:block;
 	float:left;
 }
-	.reminder-today {
-		height: 15vh;
+
+#today .no-rem {
+	height: 20vh;
+	line-height: 20vh;
+	text-align: center;
+	font-size: 2em;
+}
+	.listed-reminder {
+		height: 80px;
 		border-bottom: 1px solid silver;
 	}
 
-	.reminder-today button.main {
+	.listed-reminder button.main {
 		border: none;
 		height:inherit;
 		margin:0;
 		padding:0;
 		background:none;
+		width: 100%;
 	}
 
-	.reminder-today img {
-		width: 10%;
+	.listed-reminder button.main img {
+		width: 65px;
 		margin-right:1%;
 		margin-left:1%;
 		height: auto;
-		margin-top: 2%;
+		margin-top: 10px;
 		float: left;
+	}
+
+	.listed-reminder .list-item {
+		width: 50%;
+		float: left;
+		height: inherit;
 	}
 
 	.list-title {
 		width: 88%;
 		float: left;
 		font-size: 2em;
-		margin-top: 2%;
+		margin-top: 5%;
 		text-align: left;
 	}
 
@@ -356,11 +386,31 @@ img.menu-icon {
 		text-align: left;
 	}
 
+	.list-buttons {
+		float: right;
+		width: 33%;
+		height: inherit;
+		text-align: center;
+	}
+
+		.list-buttons a {
+			width: inherit;
+			float: right;
+		}
+
+		button.main .list-buttons img {
+			height: 60%;
+			width: auto;
+			float: none;
+			margin-top: 25%;
+			
+		}
+
 #location-home img {
 	width: 100%;
 }
 
-#content div.heading {
+.heading, .heading-2 {
 	font-family: Lobster;
 	font-size: 2em;
 	background-color: black;
@@ -377,7 +427,7 @@ img.menu-icon {
 }
 
 .grid-fourth {
-	width:18.67%;
+	width:18.66%;
 	text-align: center;
 	display: block;
 	float: left;
@@ -393,7 +443,7 @@ img.menu-icon {
 	}
 
 .button-center {
-	width:25%;
+	width:24.95%;
 	text-align: center;
 	display: block;
 	float: left;
@@ -416,7 +466,22 @@ img.menu-icon {
 #content div.button-label {
 	color: white;
 	font-weight: bold;
+	width: 80%;
+	margin:auto;
 }
+
+.square-half {
+	width: 50%;
+	float:left;
+	height:80vh;
+}
+
+button.loc-button {
+		width:50%;
+		display:block;
+		float:left;
+		font-size: 2em;
+	}
 
 /*---------------------------------------------------------------*/
 /*---------------------------------------------------------------*/
@@ -433,6 +498,7 @@ img.menu-icon {
 
 .square-fourth {
 	height: 40vh;
+	max-height: 40vh;
 	width: 49.95%;
 	float:left;
 	background-color:#43E882;
@@ -469,7 +535,7 @@ button.reminder-selection {
 	font-size: 1em;
 }
 
-#type-pictures {
+#type-pictures, #loc-pictures {
 	width: 100%;
 	max-width: 100%;
 	height: 40vh;
@@ -497,12 +563,12 @@ button.rem-pic{
 	margin-bottom: 2%;
 	font-weight: bold;
 }
-	#input-title, #input-description {
+	#input-title, #input-description, #input-address {
 		font-size: 1em;
 		margin-left: 1%;
 	}
 
-#continue {
+#continue, #finish-loc {
 	text-align: center;
 	width: 20%;
 	margin:auto;
@@ -590,12 +656,403 @@ button.rem-pic{
 		color: black;
 	}
 
+
+/*---------------------------------------------------------------*/
+/*---------------------------------------------------------------*/
+/*---------------------Reminder Pages----------------------------*/
+/*---------------------------------------------------------------*/
+
+#reminder-list {
+	height: inherit;
+}
+
+#reminder-list .square-fourth {
+	overflow-y:scroll;
+	background:white;
+	height: 45vh;
+	max-height: 45vh;
+}
+	
+	#reminder-list .square-fourth.left {
+		border-right: 1px solid silver;
+	}
+
+	#reminder-list .square-fourth.top {
+		border-bottom: 1px solid silver;
+	}
+
+#reminder-list .heading {
+	font-size: 1.3em;
+	color: white;
+}
+
+#reminder-list .heading-2 {
+	font-size: 1em;
+	background-color: silver;
+	color: white;
+	border-bottom: 1px solid black;
+	padding: 1%;
+}
+
+@media screen and (max-width: 1080px) {
+	div#logo h1 {
+		font-size: 6em;
+	}
+
+	.grid-fourth {
+		width: 18.63%;
+	}
+
+	.menu-icon-large {
+		height: 50%;
+		padding: 5%;
+	}
+
+	.menu-toggle, .add {
+		width: 10%;
+	}
+		.add a {
+			padding: 7px 0 0 30px;
+		}
+
+	#greeting {
+		width: 80%;
+	}
+
+	.listed-reminder .list-item {
+		margin-left: 5px;
+		width: 45%;
+	}
+
+	.list-title {
+		font-size: 1.5em;
+		margin-top:20px;
+	}
+
+	.list-time {
+		font-size: 1.2em;
+	}
+
+	button.main .list-buttons img {
+		height: 50%;
+		margin-top: 43%;
+	}
+
+		.list-buttons a {
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+	
+}
+
+@media screen and (max-width: 800px) {
+	div#logo h1 {
+		font-size: 5em;
+	}
+	.grid-fourth {
+		width: 18.61%;
+	}	
+
+	.menu-icon-large {
+		padding: 7%;
+	}
+
+	#content div.button-label {
+		font-size: 0.9em;
+	}
+
+	.add a {
+			padding: 9px 0 0 15px;
+		}
+
+	#today .no-rem {
+		line-height: inherit;
+		width: 80%;
+		margin:auto;
+		margin-top: 20px;
+	}
+
+	.listed-reminder {
+		height: 140px;
+	}
+
+		.listed-reminder button.main img {
+			margin-left: 15%;
+			margin-top: 0;
+		}
+
+	.listed-reminder .list-item {
+		height: 50%;
+	}
+
+	.list-title {
+		margin-top: 10px;
+	}
+
+	.list-buttons {
+		float: left;
+		height: 40%;
+		width: 42%;
+		margin-left:70px;
+	}
+
+		button.main .list-buttons img {
+			height: 100%;
+			margin-top: 15px;
+		}
+}
+
+@media screen and (max-width: 676px) {
+	div#logo h3 {
+		font-size: 1.3em;
+	}
+
+	div#logo h1 {
+		font-size: 3.5em;
+	}
+
+	.button-center {
+		width: 24.67%;
+	}
+
+	.add a {
+			padding: 9px 0 0 5px;
+		}
+
+	#today {
+		width: 100%;
+		height:auto;
+	}
+
+	#location-home {
+		width: 100%;
+		border-bottom:1px solid silver;
+	}
+
+	.listed-reminder {
+		height: 80px;
+	}
+
+		.listed-reminder button.main img {
+			margin-left: 1%;
+			margin-top: 10px;
+		}
+
+	.listed-reminder .list-item {
+		margin-left: 5px;
+		width: 55%;
+		height: inherit;
+	}
+
+	.list-title {
+		font-size: 2em;
+		margin-top:10px;
+	}
+
+	.list-time {
+		font-size: 1.2em;
+	}
+
+	.list-buttons {
+		float: left;
+	    width: 28%;
+	    height: inherit;
+	    text-align: center;
+	    margin-left: 0;
+	}
+
+	button.main .list-buttons img {
+		height: 40px;
+		margin-top: 43%;
+	}
+
+		.list-buttons a {
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+
+
+	
+}
+
 /*---------------------------------------------------------------*/
 /*-----------------------500px screen----------------------------*/
 /*------------------includes iPhones 6-6plus---------------------*/
 /*---------------------------------------------------------------*/
 
 @media screen and (max-width: 500px) {
+
+	div#loginbox {
+		width: 100%;
+	}
+
+	div#loginbox h2 {
+		font-size: 2.5em;
+	}
+
+	.login-text {
+		margin-left: 9%;
+    	margin-right: 6%;
+	}
+
+	.menu-icon-large {
+		height: 90px;
+	}
+
+	.grid-fourth {
+		width: 49.69%;
+		border-bottom:1px solid silver;
+	}
+
+	#content div.button-label {
+		margin-bottom: 10%;
+	}
+
+	.button-center {
+		width: 100%;
+	}
+
+	#navbg {
+		line-height: inherit;
+		height: 75px;
+	}
+
+	nav.main ul {
+		width: 150px;
+	}
+
+	nav.main ul li a {
+		height: inherit;
+	}
+
+	.menu-toggle, .add {
+		width: 20%;
+	}
+
+	#greeting {
+		font-size: 1.5em;
+		margin-top: 3%;
+		width: 60%;
+	}
+
+	#content {
+		margin-top:75px;
+	}
+
+	.listed-reminder .list-item {
+		width: 63%;
+	}
+
+	.list-buttons {
+		width: 35px;
+	}
+		.list-buttons a {
+			width: auto;
+			height: auto;
+		}
+
+		button.main .list-buttons img {
+			height: 23px;
+		}
+
+	#navdiv {
+		margin-top:75px;
+	}
+
+	.square-fourth {
+		width: 49.69%;
+	}
+
+	.rem-pic img {
+		width: 80%;
+		height: auto;
+	}
+
+	#type-pictures, #loc-pictures {
+		height: 30vh;
+	}
+
+	#rem-title, #rem-description {
+		font-size: 1em;
+		margin-top: 5%;
+	}
+
+	#continue {
+		height: 12vh;
+		margin-top: 15px;
+		width: 30%;
+	}
+
+	 #finish-loc {
+	 	height: 70px;
+		margin-top: 15px;
+		width: 30%;
+		margin-left:40%;
+	 }
+		#finish-loc button {
+			margin-left:10%;
+		}
+
+	#calendar-select {
+		width: 100%;
+		font-size:1em;
+		margin-top:0;
+		height: 60px;
+	}
+
+	#time-select {
+		width: 100%;
+		margin-bottom: 3%;
+		font-size:1em;
+		height: 68px;
+	}
+
+	#repeat-select {
+		font-size: 0.8em;
+	}
+
+	#set-rem img {
+		margin-top: 8px;
+	}
+
+	#calendar-today a, #calendar-tomorrow a, #morning-button a, #afternoon-button a, #evening-button a {
+		padding: 5px;
+	}
+
+	a.post-rem {
+		padding: 5px;
+	    font-size: 1.5em;
+	    display: block;
+	    margin: auto;
+	    margin-bottom: 4%;
+	    width: 80%;
+	}
+
+	#day-buttons, #tod-buttons {
+		height: 32px;
+	}
+
+	#set-complete{
+		width: 80%;
+	    margin: auto;
+	    line-height: inherit;
+	    margin-top: 35px;
+	    font-size: 2em;
+	    height: 30vh;
+	}
+
+	#reminder-list .square-fourth {
+		width: 100%;
+	}
+
+	.square-half{
+		width:100%;
+		height:45vh;
+	}
+
+	button.loc-button {
+		font-size: 1em;
+	}
 
 }
 
@@ -623,37 +1080,13 @@ button#login-button {
 	font-size:1.5em;
 }
 
-div#loginbox {
-	width: 100%;
-}
 
-	div#loginbox h2 {
-		font-size: 2em;
-	}
-
-#navbg {
-	height: 20vh;
-}
-
-#navdiv {
-	margin-top: 20vh;
-	height:80vh;
-	width: 45%;
-}
 
 nav.main ul li {
 	font-size: 0.7em;
 	height: 11.42vh;
 }
 
-#content {
-	margin-top: 20vh;
-	overflow-y:scroll;
-}
-
-#today, #location-home {
-	width: 100%;
-}
 
 #home-buttons {
 	height: auto;

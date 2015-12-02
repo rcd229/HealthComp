@@ -8,13 +8,17 @@
   <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
   <title>Mindependence | Login</title>
   <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <link rel="stylesheet" type="text/css" href="js/jquery-ui.css" />
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script src="js/jquery-ui.js"></script>
+  <script src="js/jquery-ui.min.js"></script>
   <script type="text/javascript" src="js/user.js"></script>
   <script type="text/javascript" src="js/menu.js"></script>
 
   <script>
   var user;
   var date;
+  var simReminder;
 
   function greeting() {
   	var username = "";
@@ -25,6 +29,7 @@
   		else {
   			user = new User();
   			user.fromString(localStorage.user);
+        console.log(user);
   			username = user.getUsername();
   		}
   		var greeting;
@@ -40,6 +45,7 @@
 	  	document.getElementById("greeting").innerHTML = greeting + ", " + username + "!";
 	  	getToday();
 	  	getLocation();
+
     } else {
     alert("Well this didn't work...");
     }
@@ -47,17 +53,28 @@
 
 function getToday() {
 	var count = 0;
+  var hour = date.getHours();
 	if (user != undefined) {
 		var month = date.getMonth();
 		var day = date.getDate();
 		var year = date.getFullYear();
+    var dayofweek = date.getDay();
 		console.log("" + month + " " + day + " " + year);
 		var reminders = user.getAllCategories();
     console.log("reminders");
     console.log(reminders);
 		for (var i = 0; i < reminders.length; i++) {
 			var remdate = reminders[i].getDate();
-			if (remdate[0] == month && remdate[1] == day && remdate[2] == year) {
+			if ((remdate[0] == month && remdate[1] == day && remdate[2] == year) || reminders[i].getRepeat().indexOf(dayofweek.toString()) != -1 || reminders[i].getRepeat().indexOf("Daily") != -1) {
+
+        //simulate alarm
+        if (reminders[i].getTime()[0] == hour) {
+          simReminder = reminders[i];
+          var wait = (reminders[i].getTime()[1] - date.getMinutes()) * 60000;
+          setTimeout(function(){
+            simulateReminder(simReminder);
+          }, wait);
+        }
 				var remtoday = addTodayRem(reminders[i]);
 				document.getElementById("today").innerHTML = document.getElementById("today").innerHTML + remtoday;
 				count++; 
@@ -65,19 +82,19 @@ function getToday() {
 		}
 	}
 	if (count == 0) {
-		document.getElementById("today").innerHTML = document.getElementById("today").innerHTML + "No reminders today!";
+		document.getElementById("today").innerHTML = document.getElementById("today").innerHTML + "<div class=\"no-rem\">No reminders today!</div>";
 	}
 
 }
 
 function addTodayRem(reminder){
-  var remdiv = "<div class=\"reminder-today\"><button class=\"main\">";
+  var remdiv = "<div class=\"listed-reminder\"><button class=\"main\">";
   var remimg = "<img src=" + reminder.getPicture() + ">";
-  var remtitle = "<div class=\"list-title\">" + reminder.getTitle() + "</div>";
-  var remtime = "<div class=\"list-time\">" + reminder.timeToString() + "</div>";
-  var dismiss = "<a id=\"dismiss\"><img src=\"img/done.png\"></a>";
-  var remove = "<a id=\"remove\"><img src=\"img/delete.png\"></a>";
-  remdiv = remdiv + remimg + remtitle + remtime + dismiss + remove + "</button></div>";
+  var remtitle = "<div class=\"list-item\"><div class=\"list-title\">" + reminder.getTitle() + "</div>";
+  var remtime = "<div class=\"list-time\">" + reminder.timeToString() + "</div></div>";
+  var remove = "<div class=\"list-buttons\"><a id=\"remove\"><img src=\"img/delete.png\"></a>";
+  var dismiss = "<a id=\"dismiss\"><img src=\"img/done.png\"></a></div>";
+  remdiv = remdiv + remimg + remtitle + remtime + remove + dismiss + "</button></div>";
   return remdiv;
 }
 
@@ -115,19 +132,20 @@ function showError(error) {
     }
 }
 
-function logout() {
-  console.log("logged out");
-  if(typeof(Storage) !== "undefined") {
-      if (localStorage.user != undefined) {
-        localStorage.removeItem("user");
-      }
-    }
-  else {
-    alert('lol...');
-  }
-  setTimeout(function() {
-    window.location.href = "index.html"
-  },2000);
+function simulateReminder(reminder) {
+  var remdiv = "<div style=\"height:20vh;\" class=\"popup-rem\">";
+  var remimg = "<img style=\"height:80%;float:left\" src=" + reminder.getPicture() + ">";
+  var remtitle = "<div style=\"width:50%;margin:10px 0 0 10px;float:left;\"><div class=\"list-title\">" + reminder.getTitle() + "</div>";
+  var remtime = "<div style=\"width:50%\">" + reminder.timeToString() + "</div></div>";
+  var need = "<div class=\"need-question\" style=\"font-size:1.5em;margin-bottom:15px;\">Did you need this reminder?</div><button id=\"popup-button\" onclick=\"close()\" style=\"margin:2%;font-size:1.2em;font-family:Raleway;\">Yes</button><button id=\"popup-button\" onclick=\"close()\" style=\"margin:2%;font-size:1.2em;font-family:Raleway;\">No</button>";
+  remdiv = remdiv + remimg + remtitle + remtime + "</div>" + need;
+  document.getElementById("rem-sim-div").innerHTML = remdiv; 
+  //console.log(document.getElementById("dialog").innerHTML);
+}
+
+function close() {
+  console.log("clicked from close");
+  document.getElementById("dialog").style.display = "none";
 }
 
 </script>
@@ -137,12 +155,57 @@ $( document ).ready(function() {
 	//get user greeting
 	greeting();
 
+  setTimeout(function(){
+    console.log("clicking");
+    simulateReminder(simReminder);
+    $( "#dialog" ).dialog( "open" );
+  },50000);
+  setTimeout(function(){
+      $( "#dialog" ).dialog( "close" );
+    },52500);
+
+  $( "#dialog" ).dialog({
+    autoOpen: false,
+    show: {
+      effect: "slide",
+      duration: 1000
+    },
+    hide: {
+      effect: "drop",
+      duration: 1000
+    },
+    width: "75%"
+  });
+ 
+  $( '#popup-button').click(function() {
+    console.log("clicked popup");
+    $( "#dialog" ).dialog( "close" );
+  })
+
+  $('#logout').click(function() {
+  console.log("logged out");
+  if(typeof(Storage) !== "undefined") {
+      if (localStorage.user != undefined) {
+        //localStorage.removeItem("user");
+      }
+    }
+  else {
+    alert('lol...');
+  }
+  setTimeout(function() {
+    window.location.href = "index.html"
+  },2000);
+});
 });
 
 </script>
 </head>
 
 <body>
+  <button href="#" id="rem-sim" style="display:none;"></button>
+  <div id="dialog" title="Basic dialog">
+    <div id="rem-sim-div" style="text-align:center;"></div>
+  </div>
   <div id="container">
   	<div id="navwrap">
   		<div id="navbg">

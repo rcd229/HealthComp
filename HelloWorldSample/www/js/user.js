@@ -5,6 +5,7 @@ var User = function(){
     this.tasks = new Array();
     this.events = new Array();
     this.other = new Array();
+    this.today = new Array();
 
     this.addReminder = function(reminder) {
 	var category = reminder.getCategory();
@@ -36,13 +37,13 @@ User.prototype.setPassword = function(password){
 }
 
 User.prototype.getCategory = function(category) {
-	if (category == "alarm") {
+	if (category == "alarms") {
 		return this.alarms;
 	}
-	else if (category == "event") {
+	else if (category == "events") {
 		return this.events;
 	}
-	else if (category == "task") {
+	else if (category == "tasks") {
 		return this.tasks;
 	}
 	else {
@@ -190,6 +191,14 @@ Reminder.prototype.getDescription = function(){
 	return this.description;
 }
 
+Reminder.prototype.getRepeat = function() {
+	return this.repeat;
+}
+
+Reminder.prototype.getTime = function() {
+	return [this.hour, this.minute];
+}
+
 Reminder.prototype.timeToString = function() {
 	var tod="";
 	var newh="";
@@ -219,8 +228,97 @@ Reminder.prototype.timeToString = function() {
 	else {
 		min = "" + this.minute;
 	}
-    var timestring = newh + ":" + min + " " + tod;
+	var today = new Date();
+	var month = today.getMonth();
+	var day = today.getDate();
+	var year = today.getFullYear();
+
+	var timestring="";
+	if ((this.year > year) || ((this.month > month || (this.month == month && this.day > day)) && !(this.year < year))) {
+		timestring = this.dateToString() + " - ";
+	}
+
+	var repeats="";
+	if (this.repeat.length > 0) {
+		repeats=" - "
+	}
+	for (var i = 0; i < this.repeat.length; i++) {
+		repeats = repeats + " " + this.repeatToString(this.repeat[i]);
+	}
+    timestring = timestring + newh + ":" + min + " " + tod + repeats;
     return timestring;
+}
+
+Reminder.prototype.dateToString = function(){
+	var m="";
+	if (this.month == 0) {
+		m="Jan";
+	}
+	else if (this.month == 1) {
+		m="Feb";
+	}
+	else if (this.month == 2) {
+		m="Mar";
+	}
+	else if (this.month == 3) {
+		m="Apr";
+	}
+	else if (this.month == 4) {
+		m="May";
+	}
+	else if (this.month == 5) {
+		m="Jun";
+	}
+	else if (this.month == 6) {
+		m="Jul";
+	}
+	else if (this.month == 7) {
+		m="Aug";
+	}
+	else if (this.month == 8) {
+		m="Sep";
+	}
+	else if (this.month == 9) {
+		m="Oct";
+	}
+	else if (this.month == 10) {
+		m="Nov";
+	}
+	else {
+		m="Dec";
+	}
+
+	var date = m + " " + this.day +", " + this.year;
+	return date; 
+}
+
+Reminder.prototype.repeatToString = function(repeat) {
+	var repstring="";
+	if (repeat == "0") {
+		repstring = "Sun";
+	}
+	else if (repeat == "1") {
+		repstring = "Mon"
+	}
+	else if (repeat == "2") {
+		repstring = "Tue"
+	}
+	else if (repeat == "3") {
+		repstring = "Wed"
+	}
+	else if (repeat == "4") {
+		repstring = "Thu"
+	}
+	else if (repeat == "5") {
+		repstring = "Fri"
+	}
+	else if (repeat == "6") {
+		repstring = "Sat"
+	}
+	else {
+		repstring = repeat;
+	}
+	return repstring;
 }
 
 Reminder.prototype.getDate = function() {
@@ -242,7 +340,9 @@ Reminder.prototype.toString = function() {
 }
 
 Reminder.prototype.fromString = function(reminder) {
+	console.log(reminder);
     var rArray = reminder.split("&&");
+    console.log(rArray);
     this.category = rArray[0];
     this.picture = rArray[1];
     this.title = rArray[2];
@@ -253,4 +353,7 @@ Reminder.prototype.fromString = function(reminder) {
     this.hour = rArray[7];
     this.minute = rArray[8];
     this.repeat = rArray[9].split(',');
+    if (this.repeat[0] == "") {
+    	this.repeat.pop();
+    }
 }

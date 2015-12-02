@@ -37,7 +37,7 @@ $( document ).ready(function() {
     else {
       user = new User();
       user.fromString(localStorage.user);
-      var reminders = user.getCategory("alarms");
+      var reminders = user.getCategory("other");
       var today = new Date();
       var month = today.getMonth();
       var day = today.getDate();
@@ -51,7 +51,7 @@ $( document ).ready(function() {
           document.getElementById("today-page").innerHTML = document.getElementById("today-page").innerHTML + newDiv;
           intoday = true;
         }
-        if ((remdate[2] > year) || ((remdate[0] > month || (remdate[0] == month && remdate[1] > day)) && !(remdate[2] < year))) {
+        else {
           document.getElementById("upcoming").innerHTML = document.getElementById("upcoming").innerHTML + newDiv;
         }
         var repeats = reminders[i].getRepeat();
@@ -98,7 +98,7 @@ $( document ).ready(function() {
           <a href="#"><img src="img/menu.png"></a>
           <div id="menu-option" style="display: none;">open</div>
         </div>
-        <div id="greeting">My Alarms</div>
+        <div id="greeting">Other Reminders</div>
         <div class="add">
           <a href="addReminder.html"><img src="img/plus-icon.png"></a>
         </div>

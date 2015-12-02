@@ -598,18 +598,16 @@ $(document).ready(function() {
         <form id="repeat-select">
         	<div style="font-family:Lobster;margin-bottom:1%;font-size:1.5em;">Repeat?</div>
         	<div style="margin-bottom:1%;">
-        		<input type="checkbox" name="type" value="Weekly">Daily</input>
-	        	<input type="checkbox" name="type" value="Weekly">Weekly</input>
-				<input type="checkbox" name="type" value="Monthly">Monthly</input>
+        		<input type="checkbox" name="type" value="Daily">Daily</input>
         	</div>
         	<div style="margin-bottom:1%;">
-        		<input type="checkbox" name="type" value="Sunday">Sunday</input>
-				<input type="checkbox" name="type" value="Monday">Monday</input>
-				<input type="checkbox" name="type" value="Tuesday">Tuesday</input>
-				<input type="checkbox" name="type" value="Wednesday">Wednesday</input>
-				<input type="checkbox" name="type" value="Thursday">Thursday</input>
-				<input type="checkbox" name="type" value="Friday">Friday</input>
-				<input type="checkbox" name="type" value="Saturday">Saturday</input>
+        		<input type="checkbox" name="type" value="0">Sunday</input>
+				<input type="checkbox" name="type" value="1">Monday</input>
+				<input type="checkbox" name="type" value="2">Tuesday</input>
+				<input type="checkbox" name="type" value="3">Wednesday</input>
+				<input type="checkbox" name="type" value="4">Thursday</input>
+				<input type="checkbox" name="type" value="5">Friday</input>
+				<input type="checkbox" name="type" value="6">Saturday</input>
         	</div>			
         </form>
         <div id="continue">
@@ -617,7 +615,7 @@ $(document).ready(function() {
           <a id="set-rem"><img src="img/done.png"></a>
         </div>
       </div>
-      <div id="afterSet">
+      <div id="afterSet" style="display:none;">
       	<div id="set-complete">You've set your reminder! Now what?</div>
       	<div id="post-rem-buttons">
 	      	<a class="post-rem" href="addReminder.html">Add another</a>

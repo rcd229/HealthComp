@@ -1,19 +1,10 @@
-- category screens
-- background location check
-	- 
-- background reminder notification check
-	- do you need this reminder? yes/no
-		- track (counter) for YES by title and time
-	- reminder popup
-- location page
-	- add location
+remove alarm divs
+location page
 
-
-
-- home page:
-	- today box
-		- add check and X (figure out how to remove reminders)
-		- click reminders to bring up full reminder
-		- sort by time
 
 GalaxyS6+
+
+
+screenshot: home screen
+screenshot : location screen
+screenshot: alarm

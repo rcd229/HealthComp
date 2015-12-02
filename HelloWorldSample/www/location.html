@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+  <title>Mindependence | Login</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script type="text/javascript" src="js/user.js"></script>
+  <script type="text/javascript" src="js/menu.js"></script>
+  <script>
+
+  var user = new User();
+  var latlon;
+  var pic;
+  var title;
+  var currentaddress;
+  var addedaddress;
+
+  function getLocation() {
+  if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else {
+        document.getElementById("map").innerHTML = "Geolocation is not supported by this browser.";
+    }
+
+  }
+
+  function showPosition(position) {
+    latlon = {lat: position.coords.latitude, lng: position.coords.longitude};
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 4,
+      center: latlon
+    });
+
+    var marker = new google.maps.Marker({
+      position: latlon,
+      map: map,
+      title: ''
+    });
+
+    var geocoder = new google.maps.Geocoder();
+    geocodeLatLng(geocoder, map);
+
+  }
+
+function geocodeLatLng(geocoder) {
+  geocoder.geocode({'location': latlon}, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      if (results[1]) {
+        currentaddress = results[1].formatted_address;
+      } else {
+        window.alert('No results found');
+      }
+    } else {
+      window.alert('Geocoder failed due to: ' + status);
+    }
+  });
+}
+
+function showError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            document.getElementById("map").innerHTML = "User denied the request for Geolocation."
+            break;
+        case error.POSITION_UNAVAILABLE:
+            document.getElementById("map").innerHTML = "Location information is unavailable."
+            break;
+        case error.TIMEOUT:
+            document.getElementById("map").innerHTML = "The request to get user location timed out."
+            break;
+        case error.UNKNOWN_ERROR:
+            document.getElementById("map").innerHTML = "An unknown error occurred."
+            break;
+    }
+}
+
+function addCurrent() {
+  addedaddress = currentaddress;
+  title = window.prompt("Enter a title (i.e. home, school, work) (optional)");
+  if (title != null) {
+    if (title.toLowerCase() == "home") {
+      pic = "img/home.png";
+    }
+    else if (title.toLowerCase() == "school") {
+      pic = "img/school.png";
+    }
+    else if (title.toLowerCase() == "work") {
+      pic = "img/work.png";
+    }
+    else {
+      pic = "img/loc-icon.png";
+    }
+    addLoc();
+  }
+}
+
+function addManual() {
+  console.log("clicked add manual");
+  document.getElementById("reminder-list").style.display = "none";
+  document.getElementById("addOtherLocation").style.display = "block";
+  var home = addPicture("img/home.png", "Home");
+  var school = addPicture("img/school.png", "School");
+  var work = addPicture("img/work.png", "Work");
+  var other = addPicture("img/loc-icon.png", "Other")
+  document.getElementById("loc-pictures").innerHTML = home+school+work+other;
+
+}
+
+function setOther() {
+  title = document.getElementById("input-title").value;
+  if (document.getElementById("input-address").value == "") {
+    alert("Please enter an address for your new location!");
+  }
+  else {
+    addedaddress = document.getElementById("input-address").value;
+  }
+  document.getElementById("input-title").value = "";
+  document.getElementById("input-address").value = "";
+  addLoc();
+}
+
+function addLoc() {
+  var remdiv = "<div class=\"listed-reminder\"><button class=\"main\">";
+  var remimg = "<img src=" + pic + ">";
+  var remtitle = "<div class=\"list-item\"><div class=\"list-title\">" + title + "</div>";
+  var remtime = "<div class=\"list-time\">" + addedaddress + "</div></div>";
+  var remove = "<div class=\"list-buttons\"><a id=\"remove\"><img src=\"img/delete.png\"></a>";
+  var dismiss = "<a id=\"dismiss\"><img src=\"img/done.png\"></a></div>";
+  remdiv = remdiv + remimg + remtitle + remtime + remove + dismiss + "</button></div>";
+  document.getElementById("saved-loc").innerHTML = document.getElementById("saved-loc").innerHTML + remdiv;
+  document.getElementById("addOtherLocation").style.display = "none";
+  document.getElementById("reminder-list").style.display = "block";
+}
+
+function addPicture(src, title) {
+  var picdiv = "<button onclick=\"setPic('"+ src + "','" + title + "')\" class=\"rem-pic\"><img src=" + src + "><div id=\"title-option\">" + title + "</div></button>";
+  return picdiv;
+}
+
+function setPic(src,title) {
+  pic = src;
+  document.getElementById("input-title").value = title;
+}
+
+$( document ).ready(function() {
+  if(typeof(Storage) !== "undefined") {
+    if (localStorage.user == undefined) {
+      alert("No user :(");
+    }
+    else {
+      user = new User();
+      user.fromString(localStorage.user);
+  }
+}
+
+getLocation();
+
+    $('#logout').click(function() {
+      console.log("logged out");
+      if(typeof(Storage) !== "undefined") {
+          if (localStorage.user != undefined) {
+            localStorage.removeItem("user");
+          }
+        }
+      else {
+        alert('lol...');
+      }
+      setTimeout(function() {
+        window.location.href = "index.html"
+      },2000);
+    });
+});
+
+  </script>
+</head>
+
+<body>
+  <div id="container">
+    <div id="navwrap">
+      <div id="navbg">
+        <div class="menu-toggle">
+          <a href="#"><img src="img/menu.png"></a>
+          <div id="menu-option" style="display: none;">open</div>
+        </div>
+        <div id="greeting">My Location</div>
+        <div class="add">
+          <a href="addReminder.html"><img src="img/plus-icon.png"></a>
+        </div>
+      </div>
+    </div>
+    <div id="navdiv">
+      <nav class="main">
+        <ul id="navul" class="grid full" style="display: none;">
+          <li id="myProfile" class="profile">
+            <a href="userHomeScreen.html"><img class="menu-icon" src="img/profile.png">Me</a>
+          </li>
+          <li id="myLocation">
+            <a href="location.html"><img class="menu-icon" src="img/location.png">My Location</a>
+          </li>
+          <li id="myAlarms" class="reminder">
+            <a href="alarmPage.html"><img class="menu-icon" src="img/alarm.png">My Alarms</a>
+          </li>
+          <li id="myTasks" class="reminder">
+            <a href="taskPage.html"><img class="menu-icon" src="img/task.png">My Tasks</a>
+          </li>
+          <li id="myTasks" class="reminder">
+            <a href="eventPage.html"><img class="menu-icon" src="img/event.png">My Events</a>
+          </li>
+          <li id="myTasks" class="reminder">
+            <a href="otherPage.html"><img class="menu-icon" src="img/other.png">Other Reminders</a>
+          </li>
+          <li id="logout">
+            <a href="#"><img class="menu-icon" src="img/logout.png">Logout</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  <div id="content">  
+    <div id="reminder-list">
+      <div id="map" class="square-half">
+      </div>
+      <div id="places" class="square-half">
+        <div id="add-loc-buttons">
+          <button class="loc-button" onclick="addCurrent()">+ Current Location</button>
+          <button class="loc-button" onclick="addManual()">+ Other</button>
+        </div>
+        <div id="saved-loc">
+          <div class="heading">My Saved Places</div>
+        </div>
+      </div>
+    </div>
+    <div id="addOtherLocation" style="display:none;">
+      <div id="loc-pictures">
+      </div>
+      <div id="rem-title">Title<input type="text" id="input-title"></div>
+      <div id="rem-description">Address<input type="text" id="input-address"></div>
+      <div id="finish-loc">
+        <button id="previous" onclick="cancel()"><img src="img/cancel.png"></button>
+        <button id="previous" onclick="setOther()"><img src="img/done.png"></button>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+</html>

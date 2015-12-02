@@ -11,40 +11,33 @@
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script type="text/javascript" src="js/user.js"></script>
   <script type="text/javascript" src="js/menu.js"></script>
-  <script type="text/javascript" src="js/reminder.js"></script>
 
   <script>
+  var user;
   var reminder;
   var currentTitle;
   var currentType = "category";
   var month;
   var day;
   var year;
+  var selectedmonth;
+  var selectedday;
+  var selectedyear;
+  var selectedhour;
+  var selectedminute;
 
-  function greeting(){
-  	var username = "";
+  function getUser(){
   	if(typeof(Storage) !== "undefined") {
   		if (localStorage.user == undefined) {
   			username = "undefined user";
+  			alert("No user :(");
   		}
   		else {
   			user = new User();
   			user.fromString(localStorage.user);
+  			//console.log(user);
   			username = user.getUsername();
   		}
-  		var greeting;
-  		date = new Date();
-  		var time = date.getHours();
-  		if (time < 10) {
-  			greeting = "Good morning";
-  		} else if (time < 20) {
-  			greeting = "Good day";
-  		} else {
-  			greeting = "Good evening";
-  		}
-	  	document.getElementById("greeting").innerHTML = greeting + ", " + username + "!";
-	  	getToday();
-	  	getLocation();
     } else {
     alert("Well this didn't work...");
     }
@@ -58,7 +51,8 @@ function getToday() {
 }
 
 function toType(category) {
-  reminder = new Reminder(category);
+  reminder = new Reminder();
+  reminder.setCategory(category);
   var other = addPicture("img/other-icon.png", "Other (set a title!)");
   if (category == "alarm") {
     //go to alarm options (medicine, wake up, sleep ,other)
@@ -103,11 +97,13 @@ function setPic(src,title) {
 
 function previous() {
   if (currentType == "type") {
+  	currentType =="category";
     document.getElementById("type").style.display = 'none';
     document.getElementById("category").style.display = 'block';
   }
   else {
     //current type is setting date, so go back to title/description page
+    currentType = "type";
     document.getElementById("date").style.display = 'none';
     document.getElementById("type").style.display = 'block';
   }
@@ -127,24 +123,36 @@ function toDate(){
     var description = document.getElementById("input-description").value;
     reminder.setDescription(description);
 
-    console.log(reminder);
-
     document.getElementById("type").style.display = 'none';
     document.getElementById("date").style.display = 'block';
+    currentType="date";
   }
+}
+
+function afterSet() {
+	document.getElementById("date").style.display = 'none';
+    document.getElementById("afterSet").style.display = 'block';
 }
 
 $(document).ready(function() {
 
 	getToday();
+	getUser();
 
 	//auto-set reminder for date to today
 	$('#month-select').val(month);
 	$('#day-select').val(day);
 	$('#year-select').val(year);
 
-	var m = $('#month-select').val();
-	var y = $('#year-select').val();
+	selectedmonth = parseInt($('#month-select').val());
+	selectedday = parseInt($('#day-select').val());
+	selectedyear = parseInt($('#year-select').val());
+
+
+	//get time (default is 12 PM)
+	selectedhour = parseInt($('#hour-select').val()) + 12;
+	selectedminute = parseInt($('#minute-select').val());
+	var tod = $('#am-pm-select').val();
 
 	$("#month-select").change(function() {
 		if($(this).data('options') == undefined){
@@ -152,10 +160,10 @@ $(document).ready(function() {
 	    $(this).data('options',$('#day-select option').clone());
 	    }
 
-	    m = $(this).val();
+	    selectedmonth = parseInt($(this).val());
 		var options;
 
-		if (m == 8 || m == 3 || m == 5 || m == 10) {
+		if (selectedmonth == 8 || selectedmonth == 3 || selectedmonth == 5 || selectedmonth == 10) {
 			if ($(this).data('options').length < 30) {
 				if ($(this).data('options').length < 29) {
 					$(this).data('options')
@@ -172,15 +180,13 @@ $(document).ready(function() {
 				options = $(this).data('options').not('[value="31"]');
 			}
 		}
-		else if (m == 1) {
-			console.log("feb");
-			if (y%4 != 0) {
+		else if (selectedmonth == 1) {
+			if (selectedyear%4 != 0) {
 				//not a leap year
 				options = $(this).data('options').not('[value="31"]').not('[value="30"]').not('[value="29"]');
 			}
 			else {
 				if ($(this).data('options').length < 29) {
-					console.log("need 29");
 					$(this).data('options')
 						.append($("<option></option>")
 						.attr("value",'29')
@@ -214,20 +220,23 @@ $(document).ready(function() {
 		$('#day-select').html(options);
 	});
 
+	$('#day-select').change(function() {
+		selectedday = parseInt($(this).val());
+	});
+	
 	$('#year-select').change(function() {
-		y = $(this).val();
-		if (m==1) {
+		selectedyear = parseInt($(this).val());
+		if (selectedmonth==1) {
 			if($(this).data('options') == undefined){
 			    /*Taking an array of all options-2 and kind of embedding it on the select1*/
 			    $(this).data('options',$('#day-select option').clone());
 		    }
-			console.log($(this).data('options'));
+			//console.log($(this).data('options'));
 			
 			var options = $(this).data('options').not('[value="31"]').not('[value="30"]');
 
-			if (y%4==0) {
-				//leap year in feb
-				console.log("leap year");
+			if (selectedyear%4==0) {
+				//leap year
 				if ($(this).data('options').length < 29) {
 					$(this).data('options')
 						.append($("<option></option>")
@@ -237,8 +246,6 @@ $(document).ready(function() {
 			}
 			else {
 				options = options.not('[value="29"]');
-				console.log("new options");
-				console.log(options);
 			}
 			$('#day-select').html(options);
 		}
@@ -246,10 +253,113 @@ $(document).ready(function() {
 
 	$('#calendar-today').click(function (){
 		$('#month-select').val(month);
+		selectedmonth = month;
 		$('#day-select').val(day);
+		selectedday = day;
 		$('#year-select').val(year);
+		selectedyear = year;
 		return;
 	});
+
+	$('#calendar-tomorrow').click(function (){
+		if (((month == 8 || month == 3 || month == 5 || month == 10) && (day == 30)) || (month==1 && ((day == 28 && year%4 != 0) || (day == 29 && year%4==0))) || day == 31){
+			$('#day-select').val(1);
+			selectedday = 1;
+			if (month == 11) {
+				$('#month-select').val(0);
+				selectedmonth = 0;
+			}
+			else {
+				$('#month-select').val(month + 1);
+				selectedmonth = month+1;
+			}
+		}
+		else {
+			$('#day-select').val(day+1);
+			selectedday = day+1;
+			$('#month-select').val(month);
+			selectedmonth = month;
+		}
+		if (month == 11 && day == 31) {
+			$('#year-select').val(year+1);
+			selectedyear = year+1;	
+		}
+		else {
+			$('#year-select').val(year);
+			selectedyear = year;
+		}
+		return;
+	});
+
+
+	$('#hour-select').change(function() {
+		selectedhour = parseInt($(this).val());
+		if (tod == "PM") {
+			selectedhour = selectedhour + 12;
+		}
+	});
+
+	$('#minute-select').change(function() {
+		selectedminute = parseInt($(this).val());
+	});
+
+	$('#am-pm-select').change(function() {
+		tod = $(this).val();
+		if (tod == "PM") {
+			selectedhour = selectedhour + 12;
+		}
+		if (tod == "AM") {
+			if (selectedhour > 11) {
+				selectedhour = selectedhour - 12;
+			}
+		}
+	});
+
+	$('#morning-button').click(function() {
+		$('#hour-select').val(9);
+		$('#minute-select').val(0);
+		$('#am-pm-select').val("AM");
+		selectedhour = 9;
+		selectedminute = 0;
+		tod = "AM";
+	});
+
+	$('#afternoon-button').click(function() {
+		$('#hour-select').val("1");
+		$('#minute-select').val("0");
+		$('#am-pm-select').val("PM");
+		selectedhour = 13;
+		selectedminute = 0;
+		tod = "PM";
+	});
+
+	$('#evening-button').click(function() {
+		$('#hour-select').val("5");
+		$('#minute-select').val("0");
+		$('#am-pm-select').val("PM");
+		selectedhour = 17;
+		selectedminute = 0;
+		tod = "PM";
+	});
+
+	//finish setting reminder
+	$('#set-rem').click(function() {
+		reminder.setDate(selectedmonth,selectedday,selectedyear,selectedhour,selectedminute);
+		var repeat = new Array();
+		$("input:checkbox[name=type]:checked").each(function(){
+			repeat.push($(this).val());
+		});
+		reminder.setRepeat(repeat);
+		user.addReminder(reminder);
+		console.log(reminder);
+		if(typeof(Storage) !== "undefined") {
+        	localStorage.user = user.toString();
+    	} else {
+        	alert("Cannot store locally :(");
+      	}
+      	afterSet();
+	});
+
 });
 
 </script>
@@ -336,8 +446,12 @@ $(document).ready(function() {
         </div>
       </div>
       <div id="date" style="display:none;">
+      	<div class="heading">Select a Date and Time for Your Reminder</div>
         <form id="calendar-select">
-        	<div id="calendar-today"><a style="color:black" href="#">Today</a></div>
+          <div id="day-buttons">
+          	<div id="calendar-today"><a style="color:black" href="#">Today</a></div>
+          	<div id="calendar-tomorrow"><a style="color:black" href="#">Tomorrow</a></div>
+          </div>
           <select name="month" id="month-select">
             <option value="0">January</option>
             <option value="1">February</option>
@@ -394,9 +508,119 @@ $(document).ready(function() {
             <option value="2020">2020</option>
           </select>
         </form>
-        <form id="">
-        	
+        <form id="time-select">
+        	<div id="tod-buttons">
+	        	<div id="morning-button"><a style="color:black" href="#">Morning</a></div>
+	        	<div id="afternoon-button"><a style="color:black" href="#">Afternoon</a></div>
+	        	<div id="evening-button"><a style="color:black" href="#">Evening</a></div>
+	        </div>
+        	<select name="hour" id="hour-select">
+	            <option value="0" selected="selected">12</option>
+	            <option value="1">1</option>
+	            <option value="2">2</option>
+	            <option value="3">3</option>
+	            <option value="4">4</option>
+	            <option value="5">5</option>
+	            <option value="6">6</option>
+	            <option value="7">7</option>
+	            <option value="8">8</option>
+	            <option value="9">9</option>
+	            <option value="10">10</option>
+	            <option value="11">11</option>
+          	</select>
+          	<select name="minute" id="minute-select">
+	            <option value="0" selected="selected">00</option>
+	            <option value="1">01</option>
+	            <option value="2">02</option>
+	            <option value="3">03</option>
+	            <option value="4">04</option>
+	            <option value="5">05</option>
+	            <option value="6">06</option>
+	            <option value="7">07</option>
+	            <option value="8">08</option>
+	            <option value="9">09</option>
+	            <option value="10">10</option>
+	            <option value="11">11</option>
+	            <option value="12">12</option>
+	            <option value="13">13</option>
+	            <option value="14">14</option>
+	            <option value="15">15</option>
+	            <option value="16">16</option>
+	            <option value="17">17</option>
+	            <option value="18">18</option>
+	            <option value="19">19</option>
+	            <option value="20">20</option>
+	            <option value="21">21</option>
+	            <option value="22">22</option>
+	            <option value="23">23</option>
+	            <option value="24">24</option>
+	            <option value="25">25</option>
+	            <option value="26">26</option>
+	            <option value="27">27</option>
+	            <option value="28">28</option>
+	            <option value="29">29</option>
+	            <option value="30">30</option>
+	            <option value="31">31</option>
+	            <option value="32">32</option>
+	            <option value="33">33</option>
+	            <option value="34">34</option>
+	            <option value="35">35</option>
+	            <option value="36">36</option>
+	            <option value="37">37</option>
+	            <option value="38">38</option>
+	            <option value="39">39</option>
+	            <option value="40">40</option>
+	            <option value="41">41</option>
+	            <option value="42">42</option>
+	            <option value="43">43</option>
+	            <option value="44">44</option>
+	            <option value="45">45</option>
+	            <option value="46">46</option>
+	            <option value="47">47</option>
+	            <option value="48">48</option>
+	            <option value="49">49</option>
+	            <option value="50">50</option>
+	            <option value="51">51</option>
+	            <option value="52">52</option>
+	            <option value="53">53</option>
+	            <option value="54">54</option>
+	            <option value="55">55</option>
+	            <option value="56">56</option>
+	            <option value="57">57</option>
+	            <option value="58">58</option>
+	            <option value="59">59</option>
+          	</select>
+          	<select name="am-pm" id="am-pm-select">
+	            <option value="AM">AM</option>
+	            <option value="PM" selected="selected">PM</option>
+          	</select>
         </form>
+        <form id="repeat-select">
+        	<div style="font-family:Lobster;margin-bottom:1%;font-size:1.5em;">Repeat?</div>
+        	<div style="margin-bottom:1%;">
+        		<input type="checkbox" name="type" value="Daily">Daily</input>
+        	</div>
+        	<div style="margin-bottom:1%;">
+        		<input type="checkbox" name="type" value="0">Sunday</input>
+				<input type="checkbox" name="type" value="1">Monday</input>
+				<input type="checkbox" name="type" value="2">Tuesday</input>
+				<input type="checkbox" name="type" value="3">Wednesday</input>
+				<input type="checkbox" name="type" value="4">Thursday</input>
+				<input type="checkbox" name="type" value="5">Friday</input>
+				<input type="checkbox" name="type" value="6">Saturday</input>
+        	</div>			
+        </form>
+        <div id="continue">
+          <button id="previous" onclick="previous()"><img src="img/previous-arrow.png"></button>
+          <a id="set-rem"><img src="img/done.png"></a>
+        </div>
+      </div>
+      <div id="afterSet" style="display:none;">
+      	<div id="set-complete">You've set your reminder! Now what?</div>
+      	<div id="post-rem-buttons">
+	      	<a class="post-rem" href="addReminder.html">Add another</a>
+	      	<a class="post-rem" href="userHomeScreen.html">Go to your home screen</a>
+      	</div>
       </div>
   	</div>
   </div>

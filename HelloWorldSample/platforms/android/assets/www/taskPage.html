@@ -37,7 +37,7 @@ $( document ).ready(function() {
     else {
       user = new User();
       user.fromString(localStorage.user);
-      var reminders = user.getCategory("alarms");
+      var reminders = user.getCategory("tasks");
       var today = new Date();
       var month = today.getMonth();
       var day = today.getDate();
@@ -56,15 +56,33 @@ $( document ).ready(function() {
         }
         var repeats = reminders[i].getRepeat();
         for (var j = 0; j < repeats.length; j++) {
-          if (repeats[i] == dayofweek.toString() && !intoday) {
+          if (repeats[j] == dayofweek.toString() && !intoday) {
             document.getElementById("today-page").innerHTML = document.getElementById("today-page").innerHTML + newDiv;
             intoday = true;
           }
-          if (repeats[i] == "Daily") {
+          if (repeats[j] == "Daily") {
             document.getElementById("daily").innerHTML = document.getElementById("daily").innerHTML + newDiv;
           }
-          if (repeats[i] == "Weekly") {
-            document.getElementById("weekly").innerHTML = document.getElementById("weekly").innerHTML + newDiv;
+          if (repeats[j] == "0") {
+            document.getElementById("sunday").innerHTML = document.getElementById("sunday").innerHTML + newDiv;
+          }
+          if (repeats[j] == "1") {
+            document.getElementById("monday").innerHTML = document.getElementById("monday").innerHTML + newDiv;
+          }
+          if (repeats[j] == "2") {
+            document.getElementById("tuesday").innerHTML = document.getElementById("tuesday").innerHTML + newDiv;
+          }
+          if (repeats[j] == "3") {
+            document.getElementById("wednesday").innerHTML = document.getElementById("wednesday").innerHTML + newDiv;
+          }
+          if (repeats[j] == "4") {
+            document.getElementById("thursday").innerHTML = document.getElementById("thursday").innerHTML + newDiv;
+          }
+          if (repeats[j] == "5") {
+            document.getElementById("friday").innerHTML = document.getElementById("friday").innerHTML + newDiv;
+          }
+          if (repeats[j] == "6") {
+            document.getElementById("saturday").innerHTML = document.getElementById("saturday").innerHTML + newDiv;
           }
         }
       }
@@ -98,7 +116,7 @@ $( document ).ready(function() {
           <a href="#"><img src="img/menu.png"></a>
           <div id="menu-option" style="display: none;">open</div>
         </div>
-        <div id="greeting">My Alarms</div>
+        <div id="greeting">My Tasks</div>
         <div class="add">
           <a href="addReminder.html"><img src="img/plus-icon.png"></a>
         </div>
